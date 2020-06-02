@@ -39,6 +39,18 @@ variable "extra_logs_attributes" {
   description = "Additional attributes to put onto the log bucket label"
 }
 
+variable "extra_origin_tags" { 
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
+} 
+
+variable "extra_logs_tags" { 
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
+} 
+
 variable "tags" {
   type        = map(string)
   default     = {}

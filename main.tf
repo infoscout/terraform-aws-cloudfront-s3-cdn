@@ -32,7 +32,7 @@ module "origin_label" {
   name       = var.name
   delimiter  = var.delimiter
   attributes = compact(concat(var.attributes, var.extra_origin_attributes))
-  tags       = var.tags
+  tags       = merge(var.tags, var.extra_origin_tags)
 }
 
 resource "aws_cloudfront_origin_access_identity" "default" {
@@ -144,14 +144,14 @@ resource "aws_s3_bucket" "origin" {
 }
 
 module "logs" {
-  source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=tags/0.7.0"
+  source                   = "git::https://github.com/cloudposse/terraform-aws-s3-log-storage.git?ref=tags/0.9.0"
   enabled                  = var.logging_enabled
   namespace                = var.namespace
   stage                    = var.stage
   name                     = var.name
   delimiter                = var.delimiter
   attributes               = compact(concat(var.attributes, var.extra_logs_attributes))
-  tags                     = var.tags
+  tags                     = merge(var.tags, var.extra_logs_tags)
   lifecycle_prefix         = var.log_prefix
   standard_transition_days = var.log_standard_transition_days
   glacier_transition_days  = var.log_glacier_transition_days
