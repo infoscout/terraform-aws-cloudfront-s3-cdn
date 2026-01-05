@@ -7,6 +7,7 @@ on:
   schedule:
   - cron: '0 0 * * 0'
   workflow_dispatch:
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.display }})
@@ -16,6 +17,7 @@ jobs:
       packages: read
       actions: read
       contents: read
+
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +25,7 @@ jobs:
         - display: Go
           language: go
           os: ubuntu-latest
-          build-mode: autobuild
+          build-mode: manual
         - display: Actions
           os: ubuntu-latest
           language: actions
@@ -33,7 +35,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v5
 
-      # Setup environments per language
+    # Setup environments per language
     - name: Set up Go
       if: ${{ matrix.language == 'go' }}
       uses: actions/setup-go@v5
@@ -46,12 +48,12 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
-      # (Optional) Custom build commands can go here if autobuild is insufficient.
-      # - name: Manual build
-      #   if: ${{ matrix.language == 'csharp' }}
-      #   run: |
-      #     dotnet restore
-      #     dotnet build --no-restore --configuration Release
+    
+    - name: Manual Build (Go)
+      if: ${{ matrix.language == 'go' }}
+      run: |
+        echo "Building Go project..."
+        go build ./...
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
