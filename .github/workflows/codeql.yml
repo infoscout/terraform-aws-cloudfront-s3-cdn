@@ -53,6 +53,7 @@ jobs:
       if: ${{ matrix.language == 'go' }}
       run: |
         echo "Building Go project..."
+        cd test/src
         go build ./...
 
     - name: Perform CodeQL Analysis
